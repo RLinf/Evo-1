@@ -1,0 +1,29 @@
+# Packaging metadata so Evo-1 can be installed into a venv instead of being put
+# on sys.path by hand. The modules under Evo_1/ keep their import names
+# (`config`, `scripts.*`, `model.*`, `dataset.*`) so existing code and
+# checkpoints are unaffected.
+#
+# Dependencies are deliberately not declared: downstream projects pin the torch
+# and transformers versions they need, and Evo_1/requirements.txt still lists
+# what a standalone checkout wants.
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "evo1"
+version = "0.1.0"
+description = "Evo-1: a lightweight vision-language-action model"
+requires-python = ">=3.9"
+
+[tool.setuptools]
+package-dir = { "" = "Evo_1" }
+py-modules = ["config"]
+
+[tool.setuptools.packages.find]
+where = ["Evo_1"]
+include = ["scripts*", "model*", "dataset*"]
+namespaces = true
+
+[tool.setuptools.package-data]
+"*" = ["*.json", "*.yaml", "*.yml"]
